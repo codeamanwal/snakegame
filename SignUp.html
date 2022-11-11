@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SIGN_UP PAGE</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <style>
+          *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box;
+          }
+          body{
+            background: #00E77F;
+          }
+          .row{
+            background : grey;
+            border-radius: 30px;
+            box-shadow: 12px 12px 22px black;
+          }
+          img{
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            height: 710px;
+            width: 490px;
+          }
+          .btn1{
+            border: none;
+            outline:none;
+            height: 50px;
+            width: 100%;
+            background-color: black;
+            color: white;
+            border-radius: 4px;
+            font-weight: bold;
+          }
+          .btn1:hover{
+            background: white;
+            border: 1px solid;
+            color: black;
+          }
+    </style>
+  </head>
+  <body>
+    <section class="Form my-4 mx-5">
+      <div class="container">
+        <div class="row no-gutters">
+          <div class="col-lg-5">
+            <img class= "py-3" src="https://cdn.vox-cdn.com/thumbor/nohF5lzxw_aotBcs0wvL4e9ID1k=/0x0:1934x1352/1200x800/filters:focal(1044x869:1352x1177)/cdn.vox-cdn.com/uploads/chorus_image/image/69738203/snekcrop.0.jpeg" class="img-fluid" alt="">
+
+          </div>
+          <div class="col-lg-7 px-5 pt-5">
+            <h1 class="font-weight-bold py-3"><b>SNAKE GAME</b></h1>
+            <h4>Sign Up into your account</h4>
+            <form onsubmit="signup()" method="post" mb="1 padding-bottom="3px">
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <input type="text" placeholder="First Name" id="Fname" class="form-control my-3 p-4">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <input type="text" placeholder="Last Name" id="Lname" class="form-control my-3 p-4">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <input type="email" placeholder="Email Address" id="email" class="form-control my-3 p-4">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <input type="tel" placeholder="Phone Number" id="PhNo" class="form-control my-3 p-4">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <input type="password" placeholder="********" id="password" class="form-control my-3 p-4">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <button type="button" id="submit" naame="submit" class="btn1 mt-3 mb-5">Sign Up</button>
+                </div>
+              </div>
+              <p><a href="SignIn.html">     Already have an account?</a></p>
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</html>
+
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
+    import { getDatabase,set,ref } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
+
+
+    // import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyA8eu2KxKsaQvZiPIAIeUXZNzUbWn4VVRg",
+      authDomain: "snake-14f3d.firebaseapp.com",
+      projectId: "snake-14f3d",
+      storageBucket: "snake-14f3d.appspot.com",
+      messagingSenderId: "82422209716",
+      appId: "1:82422209716:web:c78d31cd83e99703b4cbe1",
+      measurementId: "G-998SRJ25GL"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    // const analytics = getAnalytics(app);
+    const auth = getAuth();
+    const database = getDatabase(app);
+
+    
+
+    submit.addEventListener('click', (e) => {
+        var email=document.getElementById('email').value;
+
+        var password=document.getElementById('password').value;
+        
+        // var name = document.getElementById('Fname').value;
+        
+
+        createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    set(ref(database, 'users/' + user.uid), {
+    // username: name,
+    email: email,
+    password : password
+  })
+  .then(() => {
+  // Data saved successfully!
+  alert('user created succesfully');
+  window.location = 'SignIn.html';
+  })
+   .catch((error) => {
+  // The write failed...
+   alert(error);
+   });
+
+    
+
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorMessage);
+    // ..
+  });
+
+
+  
+
+
+    });
+    
+  </script>
